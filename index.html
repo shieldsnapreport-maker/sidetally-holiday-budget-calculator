@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Holiday Gift Budget Calculator 2026 | SideTally</title>
+<meta name="description" content="Free holiday gift budget calculator. Add recipients and holiday costs, see what's left, and find out how much to set aside each week or paycheck until December 25, 2026. No sign-up. Your data stays in your browser.">
+<style>
+  :root{
+    --bg:#f7f6f2; --card:#fff; --ink:#1f2933; --muted:#5b6670; --line:#e3e1da;
+    --brand:#1f6f5c; --brand-ink:#fff; --accent:#b8442f; --ok:#1f6f5c; --warn:#a15c00; --bad:#b3261e;
+    --radius:12px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+  .wrap{max-width:980px;margin:0 auto;padding:20px 16px 40px}
+  header h1{font-size:1.75rem;line-height:1.2;margin:8px 0 6px}
+  header p{margin:0;color:var(--muted)}
+  .brand{font-weight:700;color:var(--brand);letter-spacing:.02em;font-size:.95rem}
+  .grid{display:grid;grid-template-columns:1fr;gap:16px;margin-top:20px}
+  @media (min-width:860px){.grid{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)} .side{position:sticky;top:16px;align-self:start}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
+  .card h2{font-size:1.1rem;margin:0 0 4px}
+  .card .hint{margin:0 0 12px;color:var(--muted);font-size:.9rem}
+  label{font-weight:600;font-size:.9rem;display:block;margin-bottom:4px}
+  input,select{font:inherit;color:inherit;width:100%;padding:9px 10px;border:1px solid #c9c6bd;border-radius:8px;background:#fff;min-height:42px}
+  input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid #7cc4b0;outline-offset:2px}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .money{position:relative}
+  .money::before{content:"$";position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+  .money input{padding-left:22px}
+  table{width:100%;border-collapse:collapse}
+  th{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);text-align:left;font-weight:600;padding:0 6px 6px}
+  td{padding:4px 6px;vertical-align:middle}
+  td.num,th.num{text-align:right}
+  .status{font-size:.85rem;white-space:nowrap}
+  .btn{font:inherit;font-weight:600;border-radius:8px;padding:9px 14px;border:1px solid var(--brand);background:var(--brand);color:var(--brand-ink);cursor:pointer;min-height:42px}
+  .btn.secondary{background:#fff;color:var(--brand)}
+  .btn.link{background:none;border:none;color:var(--muted);text-decoration:underline;padding:6px;min-height:0}
+  .icon-btn{font:inherit;background:none;border:1px solid var(--line);border-radius:8px;width:38px;height:38px;cursor:pointer;color:var(--muted);font-size:1.1rem;line-height:1}
+  .icon-btn:hover{color:var(--bad);border-color:var(--bad)}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .sumlist{margin:0;padding:0;list-style:none}
+  .sumlist li{display:flex;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px dashed var(--line)}
+  .sumlist li:last-child{border-bottom:none}
+  .sumlist .v{font-variant-numeric:tabular-nums;font-weight:600}
+  .big{font-size:2rem;font-weight:800;color:var(--brand);font-variant-numeric:tabular-nums;line-height:1.1}
+  .msg{border-radius:8px;padding:10px 12px;margin-top:12px;font-size:.95rem}
+  .msg.ok{background:#e7f3ef;color:#14523f}
+  .msg.warn{background:#fff3df;color:#6e3f00}
+  .msg.bad{background:#fde8e6;color:#8c1d16}
+  .ok-t{color:var(--ok)} .warn-t{color:var(--warn)} .bad-t{color:var(--bad)}
+  .cta{border:1px solid #cfe3dc;background:#f1f8f5}
+  .cta h2{color:#14523f}
+  .cta a.btn{display:inline-block;text-decoration:none;margin-top:6px}
+  .cta .sec{display:block;margin-top:12px;font-size:.92rem;color:var(--brand)}
+  .note{font-size:.85rem;color:var(--muted)}
+  footer{margin-top:28px;text-align:center;color:var(--muted);font-size:.9rem}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+  /* Mobile: stack recipient rows as mini-cards */
+  @media (max-width:620px){
+    .row2{grid-template-columns:1fr}
+    .rtable thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+    .rtable,.rtable tbody,.rtable tr,.rtable td{display:block;width:100%}
+    .rtable tr{display:grid;grid-template-columns:1fr 1fr auto;gap:6px 8px;padding:10px 0;border-bottom:1px solid var(--line)}
+    .rtable td{padding:0}
+    .rtable td.c-name{grid-column:1 / 3}
+    .rtable td.c-del{grid-column:3;grid-row:1}
+    .rtable td.c-status{grid-column:1 / 4;text-align:left}
+    .rtable td[data-label]::before{content:attr(data-label);display:block;font-size:.75rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+  }
+  @media print{
+    body{background:#fff}
+    .no-print,.cta,.actions,.icon-btn{display:none!important}
+    .grid{grid-template-columns:1fr}
+    .card{border:none;padding:0 0 12px}
+    input,select{border:none;padding:0;min-height:0}
+    .money::before{position:static;transform:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand">SideTally</div>
+    <h1>Holiday Gift Budget Calculator</h1>
+    <p>Plan your gifts and holiday costs, see what's left, and find out how much to set aside before December 25, 2026. It's free, there's nothing to sign up for, and everything you type stays in this browser.</p>
+  </header>
+
+  <div class="grid">
+    <main>
+      <section class="card" aria-labelledby="h-budget">
+        <h2 id="h-budget">1. Your budget</h2>
+        <p class="hint">Not sure yet? Leave the total budget blank and the calculator will just add up your plan.</p>
+        <div class="row2">
+          <div>
+            <label for="budget">Total holiday budget (optional)</label>
+            <div class="money"><input id="budget" type="number" inputmode="decimal" min="0" step="0.01" placeholder="e.g. 800"></div>
+          </div>
+          <div>
+            <label for="freq">How often you'll set money aside</label>
+            <select id="freq">
+              <option value="weekly">Weekly</option>
+              <option value="biweekly">Every 2 weeks (biweekly)</option>
+              <option value="semimonthly">Twice a month</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" aria-labelledby="h-rec" style="margin-top:16px">
+        <h2 id="h-rec">2. Gift recipients</h2>
+        <p class="hint">Add each person and what you plan to spend. "Spent so far" is optional.</p>
+        <table class="rtable">
+          <thead><tr><th scope="col">Name</th><th scope="col" class="num">Planned</th><th scope="col" class="num">Spent so far</th><th scope="col">Status</th><th scope="col"><span class="sr-only">Remove</span></th></tr></thead>
+          <tbody id="rbody"></tbody>
+        </table>
+        <div class="actions"><button type="button" class="btn secondary" id="addRec">+ Add recipient</button></div>
+      </section>
+
+      <section class="card" aria-labelledby="h-cat" style="margin-top:16px">
+        <h2 id="h-cat">3. Other holiday costs (optional)</h2>
+        <p class="hint">These costs add up fast. Leave any of them blank if they don't apply to you.</p>
+        <table class="rtable">
+          <thead><tr><th scope="col">Category</th><th scope="col" class="num">Planned</th><th scope="col" class="num">Spent so far</th><th scope="col">Status</th><th scope="col"><span class="sr-only">Remove</span></th></tr></thead>
+          <tbody id="cbody"></tbody>
+        </table>
+      </section>
+    </main>
+
+    <aside class="side">
+      <section class="card" aria-labelledby="h-sum" aria-live="polite">
+        <h2 id="h-sum">Your plan at a glance</h2>
+        <ul class="sumlist">
+          <li><span>Gifts planned</span><span class="v" id="sGifts">$0.00</span></li>
+          <li><span>Other costs planned</span><span class="v" id="sCats">$0.00</span></li>
+          <li><span><strong>Total planned</strong></span><span class="v" id="sPlanned">$0.00</span></li>
+          <li><span>Spent so far</span><span class="v" id="sSpent">$0.00</span></li>
+          <li><span>Still to spend</span><span class="v" id="sToSpend">$0.00</span></li>
+          <li id="liBudget"><span>Budget left after plan</span><span class="v" id="sLeft">n/a</span></li>
+        </ul>
+        <div id="sMsg" class="msg ok">Add a budget or a few recipients to get started.</div>
+        <div style="margin-top:16px">
+          <div class="note" id="sSaveLabel">Set aside per week until Dec 25</div>
+          <div class="big" id="sPer">$0.00</div>
+          <div class="note" id="sSaveExplain"></div>
+        </div>
+        <div class="actions no-print">
+          <button type="button" class="btn" id="csvBtn">Download CSV</button>
+          <button type="button" class="btn secondary" id="printBtn">Print plan</button>
+          <button type="button" class="btn link" id="resetBtn">Clear all</button>
+        </div>
+        <p class="note no-print" style="margin-top:10px">Saved only in this browser (localStorage). Nothing is sent anywhere.</p>
+      </section>
+
+      <section class="card cta" aria-labelledby="h-cta" style="margin-top:16px">
+        <h2 id="h-cta">Want the full holiday plan?</h2>
+        <p style="margin:4px 0 8px">The <strong>Holiday Budget &amp; Gift Planner</strong> is a spreadsheet for Excel and Google Sheets. It tracks your gift list, holiday spending, and what you've already bought, all in one place.</p>
+        <a class="btn" href="https://payhip.com/b/0NRgl" rel="noopener">Get the Holiday Planner &mdash; $9</a>
+        <a class="sec" href="https://payhip.com/b/JbqOh" rel="noopener">Getting ready for next year? See the 2027 Monthly Budget Planner ($9) &rarr;</a>
+      </section>
+    </aside>
+  </div>
+
+  <footer>Free tool by SideTally. &middot; <a href="https://payhip.com/SideTally" rel="noopener">SideTally shop</a><br><span class="note">This calculator gives estimates only and isn't financial advice.</span></footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var KEY = "sidetally-holiday-gift-calc-v1";
+  var TARGET = new Date(2026, 11, 25); // Dec 25, 2026 (local time)
+  var FREQ = {
+    weekly:      {days: 7,        label: "week",        noun: "weekly"},
+    biweekly:    {days: 14,       label: "paycheck (every 2 weeks)", noun: "biweekly"},
+    semimonthly: {days: 365.25/24, label: "paycheck (twice a month)", noun: "twice-monthly"},
+    monthly:     {days: 365.25/12, label: "month",       noun: "monthly"}
+  };
+  var DEFAULT_CATS = ["Decor", "Food & hosting", "Travel", "Cards & shipping"];
+  var fmt = new Intl.NumberFormat("en-US", {style: "currency", currency: "USD"});
+  var $ = function(id){ return document.getElementById(id); };
+
+  // "Today": real date, with an optional ?today=YYYY-MM-DD override for testing.
+  function getToday(){
+    var m = /[?&]today=(\d{4})-(\d{2})-(\d{2})/.exec(location.search);
+    var d = m ? new Date(+m[1], +m[2]-1, +m[3]) : new Date();
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  }
+
+  function num(v){
+    var n = parseFloat(String(v == null ? "" : v).replace(/[^0-9.\-]/g, ""));
+    return isFinite(n) && n > 0 ? Math.round(n * 100) / 100 : 0;
+  }
+  function cents(n){ return Math.round(n * 100) / 100; }
+
+  var state = load() || {
+    budget: "", freq: "biweekly",
+    recipients: [{name:"", planned:"", spent:""}],
+    cats: DEFAULT_CATS.map(function(c){ return {name:c, planned:"", spent:""}; })
+  };
+
+  function load(){
+    try {
+      var s = JSON.parse(localStorage.getItem(KEY));
+      if (s && Array.isArray(s.recipients) && Array.isArray(s.cats)) return s;
+    } catch (e) {}
+    return null;
+  }
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+  function el(tag, attrs, kids){
+    var e = document.createElement(tag);
+    for (var k in attrs) {
+      if (k === "text") e.textContent = attrs[k];
+      else if (k === "className") e.className = attrs[k];
+      else e.setAttribute(k, attrs[k]);
+    }
+    (kids || []).forEach(function(c){ e.appendChild(c); });
+    return e;
+  }
+
+  function moneyInput(value, label, onInput){
+    var i = el("input", {type:"number", inputmode:"decimal", min:"0", step:"0.01", "aria-label": label, placeholder:"0"});
+    i.value = value;
+    i.addEventListener("input", function(){ onInput(i.value); });
+    return el("div", {className:"money"}, [i]);
+  }
+
+  function renderRows(tbody, list, kind){
+    tbody.innerHTML = "";
+    list.forEach(function(item, idx){
+      var n = idx + 1;
+      var nameLabel = kind === "r" ? "Recipient " + n + " name" : "Category " + n + " name";
+      var nameIn = el("input", {type:"text", "aria-label": nameLabel, placeholder: kind === "r" ? "e.g. Mom" : "Category", maxlength:"60"});
+      nameIn.value = item.name;
+      nameIn.addEventListener("input", function(){ item.name = nameIn.value; update(); });
+      var who = function(){ return item.name || (kind === "r" ? "recipient " + n : "category " + n); };
+      var status = el("td", {className:"status c-status", "data-status":"", "aria-live":"polite"});
+      var del = el("button", {type:"button", className:"icon-btn", "aria-label":"Remove " + who(), title:"Remove"});
+      del.textContent = "\u00d7";
+      del.addEventListener("click", function(){ list.splice(idx, 1); renderAll(); });
+      var tr = el("tr", {}, [
+        el("td", {className:"c-name"}, [nameIn]),
+        el("td", {className:"num", "data-label":"Planned"}, [moneyInput(item.planned, "Planned amount for " + who(), function(v){ item.planned = v; update(); })]),
+        el("td", {className:"num", "data-label":"Spent so far"}, [moneyInput(item.spent, "Spent so far for " + who(), function(v){ item.spent = v; update(); })]),
+        status,
+        el("td", {className:"c-del"}, [del])
+      ]);
+      tbody.appendChild(tr);
+    });
+  }
+
+  function rowStatus(item){
+    var p = num(item.planned), s = num(item.spent);
+    if (!p && !s) return {t:"", c:""};
+    if (s > p) return {t:"Over by " + fmt.format(cents(s - p)), c:"bad-t"};
+    if (p && s === p) return {t:"Done \u2713", c:"ok-t"};
+    return {t: fmt.format(cents(p - s)) + " to go", c:""};
+  }
+
+  // Number of set-aside dates from today (inclusive) up to, but not including, Dec 25.
+  function periodsLeft(today, freqKey){
+    var days = Math.round((TARGET - today) / 86400000);
+    if (days <= 0) return {days: days, periods: 0};
+    return {days: days, periods: Math.max(1, Math.ceil(days / FREQ[freqKey].days))};
+  }
+
+  function calc(){
+    var g = {planned:0, spent:0, toSpend:0}, c = {planned:0, spent:0, toSpend:0};
+    state.recipients.forEach(function(r){ var p=num(r.planned), s=num(r.spent); g.planned+=p; g.spent+=s; g.toSpend+=Math.max(0,p-s); });
+    state.cats.forEach(function(r){ var p=num(r.planned), s=num(r.spent); c.planned+=p; c.spent+=s; c.toSpend+=Math.max(0,p-s); });
+    var budget = num(state.budget);
+    var planned = cents(g.planned + c.planned), spent = cents(g.spent + c.spent);
+    var toSpend = cents(g.toSpend + c.toSpend);
+    // What still needs to be saved: remaining plan; if no plan yet, the unspent budget.
+    var needBase = planned > 0 ? toSpend : Math.max(0, cents(budget - spent));
+    var pl = periodsLeft(getToday(), state.freq);
+    var per = pl.periods ? Math.ceil((needBase / pl.periods) * 100) / 100 : 0;
+    return {gifts: cents(g.planned), cats: cents(c.planned), planned: planned, spent: spent, toSpend: toSpend,
+            budget: budget, hasBudget: budget > 0, left: cents(budget - planned), spentVsBudget: cents(budget - spent),
+            need: needBase, per: per, periods: pl.periods, days: pl.days};
+  }
+
+  function update(){
+    save();
+    var r = calc();
+    $("sGifts").textContent = fmt.format(r.gifts);
+    $("sCats").textContent = fmt.format(r.cats);
+    $("sPlanned").textContent = fmt.format(r.planned);
+    $("sSpent").textContent = fmt.format(r.spent);
+    $("sToSpend").textContent = fmt.format(r.toSpend);
+    var left = $("sLeft");
+    left.className = "v";
+    if (r.hasBudget) {
+      left.textContent = r.left < 0 ? "\u2212" + fmt.format(-r.left) : fmt.format(r.left);
+      if (r.left < 0) left.className = "v bad-t";
+    } else left.textContent = "n/a (no budget set)";
+
+    var msg = $("sMsg"), m, cls;
+    var overRows = state.recipients.concat(state.cats).filter(function(x){ return num(x.spent) > num(x.planned); }).length;
+    if (!r.hasBudget && !r.planned && !r.spent) { cls="ok"; m="Add a budget or a few recipients to get started."; }
+    else if (r.hasBudget && r.spent > r.budget) { cls="bad"; m="You've already spent " + fmt.format(cents(r.spent - r.budget)) + " more than your budget."; }
+    else if (r.hasBudget && r.left < 0) { cls="bad"; m="Your plan is " + fmt.format(-r.left) + " over budget. Try trimming a few gifts or costs."; }
+    else if (r.hasBudget && r.planned > 0 && r.left <= r.budget * 0.05) { cls="warn"; m="You're within 5% of your budget (" + fmt.format(r.left) + " left). Leave a little cushion if you can."; }
+    else if (r.hasBudget) { cls="ok"; m="You're under budget with " + fmt.format(r.left) + " to spare."; }
+    else { cls="ok"; m="Your plan totals " + fmt.format(r.planned) + ". Add a total budget to check it against a limit."; }
+    if (overRows && cls !== "bad") { cls = "warn"; m += " " + overRows + (overRows === 1 ? " item is" : " items are") + " over its planned amount."; }
+    msg.className = "msg " + cls; msg.textContent = m;
+
+    var f = FREQ[state.freq];
+    $("sSaveLabel").textContent = "Set aside per " + f.label + " until Dec 25";
+    $("sPer").textContent = fmt.format(r.per);
+    var ex;
+    if (r.days === 0) ex = "It's December 25. Happy holidays! There's nothing left to save toward.";
+    else if (r.days < 0) ex = "December 25, 2026 has passed, so there's nothing left to save toward.";
+    else if (!r.need) ex = "Nothing left to save. Your plan is fully paid for.";
+    else ex = fmt.format(r.need) + " still needed over " + r.periods + " " + f.noun + " set-aside" + (r.periods === 1 ? "" : "s") +
+              " (" + r.days + " day" + (r.days === 1 ? "" : "s") + " left, counting today as the first set-aside).";
+    $("sSaveExplain").textContent = ex;
+
+    // Row statuses
+    [["rbody", state.recipients], ["cbody", state.cats]].forEach(function(pair){
+      var rows = $(pair[0]).querySelectorAll("tr");
+      pair[1].forEach(function(item, i){
+        var st = rowStatus(item), td = rows[i] && rows[i].querySelector("[data-status]");
+        if (td) { td.textContent = st.t; td.className = "status c-status " + st.c; }
+      });
+    });
+  }
+
+  function renderAll(){
+    $("budget").value = state.budget;
+    $("freq").value = state.freq;
+    renderRows($("rbody"), state.recipients, "r");
+    renderRows($("cbody"), state.cats, "c");
+    update();
+  }
+
+  function csvCell(v){
+    var s = String(v);
+    if (/^[=+\-@]/.test(s) && !/^-?\d+(\.\d+)?$/.test(s)) s = "'" + s; // avoid spreadsheet formula injection
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }
+  function buildCSV(){
+    var r = calc(), rows = [["Type","Name","Planned","Spent so far","Remaining"]];
+    state.recipients.forEach(function(x){ if (x.name || num(x.planned) || num(x.spent)) rows.push(["Gift", x.name || "(unnamed)", num(x.planned).toFixed(2), num(x.spent).toFixed(2), cents(num(x.planned)-num(x.spent)).toFixed(2)]); });
+    state.cats.forEach(function(x){ if (num(x.planned) || num(x.spent)) rows.push(["Category", x.name || "(unnamed)", num(x.planned).toFixed(2), num(x.spent).toFixed(2), cents(num(x.planned)-num(x.spent)).toFixed(2)]); });
+    rows.push([]);
+    rows.push(["Summary","Total planned", r.planned.toFixed(2)]);
+    rows.push(["Summary","Spent so far", r.spent.toFixed(2)]);
+    rows.push(["Summary","Still to spend", r.toSpend.toFixed(2)]);
+    rows.push(["Summary","Total budget", r.hasBudget ? r.budget.toFixed(2) : ""]);
+    rows.push(["Summary","Budget left after plan", r.hasBudget ? r.left.toFixed(2) : ""]);
+    rows.push(["Summary","Set aside per " + FREQ[state.freq].label + " until Dec 25 2026", r.per.toFixed(2)]);
+    rows.push([]);
+    rows.push(["Made with the free Holiday Gift Budget Calculator by SideTally"]);
+    return rows.map(function(row){ return row.map(csvCell).join(","); }).join("\r\n");
+  }
+
+  $("budget").addEventListener("input", function(e){ state.budget = e.target.value; update(); });
+  $("freq").addEventListener("change", function(e){ state.freq = e.target.value; update(); });
+  $("addRec").addEventListener("click", function(){
+    state.recipients.push({name:"", planned:"", spent:""}); renderAll();
+    var ins = $("rbody").querySelectorAll("tr:last-child input"); if (ins[0]) ins[0].focus();
+  });
+  $("csvBtn").addEventListener("click", function(){
+    var blob = new Blob(["\ufeff" + buildCSV()], {type:"text/csv;charset=utf-8"});
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = "holiday-gift-budget-2026.csv";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+  });
+  $("printBtn").addEventListener("click", function(){ window.print(); });
+  $("resetBtn").addEventListener("click", function(){
+    if (!confirm("Clear your whole plan? This can't be undone.")) return;
+    state = {budget:"", freq:"biweekly", recipients:[{name:"",planned:"",spent:""}], cats: DEFAULT_CATS.map(function(c){ return {name:c, planned:"", spent:""}; })};
+    renderAll();
+  });
+
+  // Expose for automated tests only (read-only helpers).
+  window.__holidayCalc = {calc: calc, buildCSV: buildCSV};
+  renderAll();
+})();
+</script>
+</body>
+</html>
